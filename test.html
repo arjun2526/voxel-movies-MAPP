@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Voxel check</title>
+<style>body{background:#0b0506;color:#f5f5f7;font:16px/1.6 system-ui,sans-serif;padding:20px;max-width:640px;margin:auto}h1{font-size:22px}p{margin:8px 0;padding:10px 12px;border-radius:10px;background:#1b0d0f;word-break:break-word}.ok{border-left:4px solid #3ddc84}.bad{border-left:4px solid #ff3b47}.w{border-left:4px solid #888}</style>
+<script src="config.js"></script></head>
+<body><h1>Voxel setup check</h1><div id="o"></div>
+<script>
+const o=document.getElementById("o");
+const say=(ok,t)=>{const p=document.createElement("p");p.className=ok===null?"w":ok?"ok":"bad";p.textContent=(ok===null?"… ":ok?"✓ ":"✗ ")+t;o.appendChild(p);return p};
+say(true,"JavaScript runs on this phone.");
+(async()=>{
+  for(const f of ["index.html","style.css","player.css","data.js","app.js","player.js"]){
+    try{
+      const r=await fetch(f+"?x="+Date.now(),{cache:"no-store"});const s=await r.text();
+      const end=f.endsWith(".html")?/<\/html>\s*$/.test(s):s.includes("/*END*/");
+      say(r.ok&&end,f+(r.ok?": "+(s.length/1024).toFixed(1)+" KB"+(end?", complete":", CUT OFF or old version. Upload it again"):": not found. Upload it"));
+    }catch(e){say(false,f+": could not be read")}
+  }
+  const C=window.VOXEL;
+  if(!C){say(false,"config.js did not load or has a mistake. Open /config.js to look at it.");return}
+  say(true,"config.js loaded.");
+  say((C.TMDB_KEY||"").length===32,"TMDB key length is "+(C.TMDB_KEY||"").length+" (should be 32)");
+  say((C.GOOGLE_API_KEY||"").startsWith("AIza"),"Google key length is "+(C.GOOGLE_API_KEY||"").length+(String(C.GOOGLE_API_KEY||"").startsWith("AIza")?"":" and does not start with AIza"));
+  say((C.FOLDER_ID||"").length>20,"Folder ID is filled in");
+  try{
+    const q=encodeURIComponent("'"+C.FOLDER_ID+"' in parents and mimeType contains 'video/' and trashed=false");
+    const r=await fetch("https://www.googleapis.com/drive/v3/files?q="+q+"&fields=files(id,name)&key="+C.GOOGLE_API_KEY);
+    const d=await r.json();
+    if(r.ok)say(true,"Google Drive works. Videos found: "+(d.files||[]).map(f=>f.name).join(", "));
+    else say(false,"Google Drive said "+r.status+": "+((d.error||{}).message||"unknown"));
+  }catch(e){say(false,"Google Drive request failed: "+e.message)}
+  try{
+    const r=await fetch("https://api.themoviedb.org/3/search/movie?api_key="+C.TMDB_KEY+"&query=Inception");
+    const d=await r.json();
+    if(r.ok){const f=(d.results||[])[0]||{};say(true,"TMDB works. Found: "+f.title);
+      const pr=u=>new Promise(x=>{const i=new Image(),m=setTimeout(()=>x(false),6000);i.onload=()=>{clearTimeout(m);x(true)};i.onerror=()=>{clearTimeout(m);x(false)};i.src=u});
+      if(f.poster_path){const u="https://image.tmdb.org/t/p/w185"+f.poster_path;
+        say(await pr(u),"Posters load directly from TMDB on this network");
+        say(await pr("https://wsrv.nl/?url="+encodeURIComponent(u)),"Posters load through the backup route (wsrv.nl)")}}
+    else say(false,"TMDB said "+r.status+": "+(d.status_message||"unknown"));
+  }catch(e){say(false,"TMDB request failed: "+e.message)}
+})();
+</script></body></html>

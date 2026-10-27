@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#050304">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Voxel Movies</title>
+<script>
+addEventListener("error",function(e){var m=e.target&&e.target.src?"Could not load "+e.target.src.split("/").pop():e.message;if(!m)return;var t=document.createElement("pre");t.style.cssText="position:fixed;z-index:99;left:8px;right:8px;bottom:90px;margin:0;padding:12px;border-radius:12px;background:#3a0508;color:#fff;font:12px/1.4 monospace;white-space:pre-wrap";t.textContent="Page error: "+m+(e.lineno?" (line "+e.lineno+")":"");document.documentElement.appendChild(t)},true);
+setTimeout(function(){var f=window.__f||[],need=["data.js","m.js","player.js"],miss=need.filter(function(n){return f.indexOf(n)<0});if(!miss.length)return;var t=document.createElement("pre");t.style.cssText="position:fixed;z-index:99;left:8px;right:8px;top:30%;margin:0;padding:16px;border-radius:14px;background:#3a0508;color:#fff;font:14px/1.5 sans-serif;white-space:pre-wrap";t.textContent="Voxel is missing or has an incomplete file:\n"+miss.join(", ")+"\n\nUpload that file again, wait one minute, then reload.";document.documentElement.appendChild(t)},3500);
+</script>
+<script src="config.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="m.css?v=1">
+<link rel="stylesheet" href="player.css?v=7">
+</head>
+<body>
+<header class="hdr"><b>VOXEL</b> <span>MOVIES</span></header>
+<main id="main"></main>
+<nav class="tabbar" id="tabs" aria-label="Main"></nav>
+<div class="sv" id="sv"></div>
+<aside class="sh" id="sh" role="dialog" aria-modal="true" aria-label="Title details"></aside>
+<div class="pl" id="pl" role="dialog" aria-modal="true" aria-label="Video player">
+  <video id="p_v" playsinline></video>
+  <div class="pl-hit" id="p_hit"></div>
+  <div class="pl-spin"></div><div class="pl-msg" id="p_msg"></div><div class="pl-skip" id="p_skip"></div>
+  <div class="pl-top"><button id="p_back" aria-label="Back"></button><div><b id="p_title"></b><small id="p_sub"></small></div></div>
+  <div class="pl-bot">
+    <div class="pl-seek" id="p_seek"><i id="p_buf"></i><i id="p_fill"></i><span class="knob" id="p_knob"></span><span class="tip" id="p_tip">0:00</span></div>
+    <div class="pl-row">
+      <div class="g"><button id="p_play" aria-label="Play or pause"></button><button id="p_rw" aria-label="Back 10 seconds"></button><button id="p_ff" aria-label="Forward 10 seconds"></button><button id="p_mute" aria-label="Mute"></button><input id="p_vol" type="range" min="0" max="1" step="0.05" value="1" aria-label="Volume"><span id="p_time">0:00 / 0:00</span></div>
+      <div class="g"><button class="txt" id="p_next" style="display:none">Next episode</button><button class="txt" id="p_speed" aria-label="Playback speed">1×</button><button id="p_fs" aria-label="Fullscreen"></button></div>
+    </div>
+  </div>
+</div>
+
+<script src="data.js?v=9"></script>
+<script src="m.js?v=1"></script>
+<script src="player.js?v=9"></script>
+</body>
+</html>

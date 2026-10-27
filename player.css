@@ -1,0 +1,38 @@
+.pl{position:fixed;inset:0;z-index:80;background:#000;opacity:0;pointer-events:none;transition:opacity .3s;color:#fff;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.pl.open{opacity:1;pointer-events:auto}
+.pl video{position:absolute;inset:0;width:100%;height:100%;background:#000;object-fit:contain}
+.pl-hit{position:absolute;inset:0}
+.pl-top,.pl-bot{position:absolute;left:0;right:0;transition:opacity .35s,transform .35s}
+.pl-top{top:0;padding:calc(18px + env(safe-area-inset-top,0px)) 26px 70px;display:flex;gap:16px;align-items:center;background:linear-gradient(rgba(0,0,0,.82),transparent)}
+.pl-top b{display:block;font-size:20px;font-weight:600;letter-spacing:-.01em}.pl-top small{color:#c9c9cf;font-size:13px}
+.pl-bot{bottom:0;padding:80px 26px calc(18px + env(safe-area-inset-bottom,0px));background:linear-gradient(transparent,rgba(0,0,0,.9))}
+.pl.idle .pl-top{opacity:0;transform:translateY(-8px);pointer-events:none}.pl.idle .pl-bot{opacity:0;transform:translateY(8px);pointer-events:none}.pl.idle{cursor:none}
+.pl button{color:#fff;display:inline-grid;place-items:center;width:46px;height:46px;border-radius:50%;transition:background .2s,transform .15s}
+.pl button:hover{background:rgba(255,255,255,.18)}.pl button:active{transform:scale(.92)}
+.pl-top button{background:rgba(255,255,255,.12);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line)}
+.pl-seek{position:relative;height:24px;display:flex;align-items:center;cursor:pointer;touch-action:none}
+.pl-seek::before{content:"";position:absolute;left:0;right:0;height:5px;border-radius:5px;background:rgba(255,255,255,.22);transition:height .15s}
+.pl-seek i{position:absolute;left:0;height:5px;border-radius:5px;pointer-events:none;transition:height .15s}
+.pl-seek:hover::before,.pl-seek.dr::before,.pl-seek:hover i,.pl-seek.dr i{height:8px}
+#p_buf{background:rgba(255,255,255,.32);width:0}#p_fill{background:var(--red2);width:0}
+.knob{position:absolute;left:0;width:16px;height:16px;margin-left:-8px;border-radius:50%;background:#fff;box-shadow:0 0 12px rgba(229,9,20,.85);transform:scale(0);transition:transform .15s;pointer-events:none}
+.pl-seek:hover .knob,.pl-seek.dr .knob,.pl.pause .knob{transform:scale(1)}
+.tip{position:absolute;bottom:28px;transform:translateX(-50%);padding:4px 9px;border-radius:8px;background:rgba(30,30,34,.92);font-size:12px;opacity:0;pointer-events:none;white-space:nowrap}
+.pl-seek:hover .tip{opacity:1}
+.pl-row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:4px}
+.pl-row .g{display:flex;align-items:center;gap:6px}
+#p_play{width:58px;height:58px}#p_play svg{width:32px;height:32px}
+#p_time{font-size:13.5px;color:#d6d6dc;margin-left:10px;font-variant-numeric:tabular-nums}
+#p_vol{width:90px;accent-color:#ff3b47}
+.pl .txt{width:auto;border-radius:23px;padding:0 16px;font-size:13.5px;font-weight:600;background:rgba(255,255,255,.12);border:1px solid var(--line)}
+.pl-spin{position:absolute;left:50%;top:50%;width:58px;height:58px;margin:-29px;border:4px solid rgba(255,255,255,.2);border-top-color:var(--red2);border-radius:50%;animation:spin .9s linear infinite;opacity:0;pointer-events:none}.pl.wait .pl-spin{opacity:1}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pl-msg{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);max-width:min(440px,86%);text-align:center;line-height:1.6;padding:18px 22px;border-radius:16px;background:rgba(20,10,12,.88);border:1px solid var(--line);display:none}.pl-msg small{color:#c9c9cf}
+.pl-skip{position:absolute;top:50%;transform:translateY(-50%);padding:14px 20px;border-radius:99px;background:rgba(0,0,0,.55);font-weight:600;opacity:0;transition:opacity .2s;pointer-events:none}.pl-skip.show{opacity:1}
+@media(pointer:coarse){#p_vol,#p_mute{display:none}.pl-top,.pl-bot{padding-left:18px;padding-right:18px}}
+#p_if{position:absolute;left:0;right:0;top:64px;width:100%;height:calc(100% - 64px);border:0;background:#000}
+.pl.alt .pl-hit,.pl.alt .pl-bot,.pl.alt .pl-spin,.pl.alt .pl-msg{display:none}
+.pl.alt video{display:none}
+.pl.alt .pl-top{opacity:1!important;transform:none!important;pointer-events:none;padding-bottom:10px;background:rgba(0,0,0,.85)}
+.pl.alt .pl-top button{pointer-events:auto}
+/*END*/
